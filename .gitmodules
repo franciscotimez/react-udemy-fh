@@ -1,0 +1,3 @@
+[submodule "05-hook-app"]
+	path = 05-hook-app
+	url = git@github.com:franciscotimez/05-hook-app.git
