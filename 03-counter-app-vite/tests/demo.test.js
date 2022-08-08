@@ -4,10 +4,8 @@ describe('Pruebas en <DemoComponent />', () => {
         // Inicializacion
         const msg1 = 'Esta prueba no pueba nada';
         // Estimulo
-        const msg2 = 'Estim';
+        const msg2 = 'Esta prueba no pueba nada';
         // Observar
         expect(msg1).toBe(msg2);
-
-        ex;
     });
 });
