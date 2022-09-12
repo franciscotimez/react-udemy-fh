@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { AuthContext } from "../../src/auth";
 import { PrivateRoute } from "../../src/router/PrivateRoute";
 
@@ -23,13 +23,13 @@ describe('Pruebas en <PrivateRoute/>', () => {
             <AuthContext.Provider value={contextValue} >
                 <MemoryRouter initialEntries={['/search?q=batman']}>
                     <PrivateRoute >
-                        <h1>Ruta Publica</h1>
+                        <h1>Ruta Privada</h1>
                     </PrivateRoute>
                 </MemoryRouter>
             </AuthContext.Provider>
         );
 
-        expect(screen.getByText("Ruta Publica")).toBeTruthy();
+        expect(screen.getByText("Ruta Privada")).toBeTruthy();
         expect(localStorage.setItem).toHaveBeenCalledWith("lastPath","/search?q=batman")
     });
 
