@@ -34,7 +34,7 @@ export const SearchPage = () => {
         <div className="col-5">
           <h4>Search</h4>
           <hr />
-          <form onSubmit={onSearchSubmit}>
+          <form onSubmit={onSearchSubmit} aria-label="form">
             <input
               type="text"
               placeholder="Search a hero"
@@ -67,7 +67,7 @@ export const SearchPage = () => {
 
           {
             showError && (
-              <div className="alert alert-danger">
+              <div aria-label="notFoundResult" className="alert alert-danger">
                 No results found
               </div>
             )

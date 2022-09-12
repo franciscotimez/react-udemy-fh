@@ -8,8 +8,8 @@ const mockedUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
     useNavigate: () => mockedUseNavigate
-})
-);
+}));
+
 describe('Pruebas en <NavBar />', () => {
 
     const contextValue = {
@@ -51,6 +51,6 @@ describe('Pruebas en <NavBar />', () => {
         fireEvent.click(logoutBtn);
 
         expect(contextValue.logout).toHaveBeenCalled();
-        expect(mockedUseNavigate).toHaveBeenCalledWith("/login",{replace:true});
+        expect(mockedUseNavigate).toHaveBeenCalledWith("/login", { replace: true });
     });
 });
