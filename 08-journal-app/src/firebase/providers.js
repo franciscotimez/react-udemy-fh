@@ -15,7 +15,7 @@ export const singInWithGoogle = async () => {
             displayName, email, photoURL, uid
         };
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return {
             ok: false,
             errorMessage: error.message
@@ -36,7 +36,7 @@ export const registerWithUserPassword = async ({ email, password, displayName })
             displayName, email, photoURL, uid
         };
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return {
             ok: false,
             errorMessage: error.message
