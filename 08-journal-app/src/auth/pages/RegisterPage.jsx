@@ -3,6 +3,8 @@ import { Grid, TextField, Typography, Button, Link } from "@mui/material";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { startRegisterWithUserPassword } from "../../store/auth/thunks";
 
 const formData = {
   displayName: '',
@@ -18,6 +20,7 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+  const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const { formState, displayName, email, password, onInputChange,
@@ -27,8 +30,9 @@ export const RegisterPage = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     setIsFormSubmitted(true);
-    console.log(formState);
-    console.log(displayNameValid);
+    if (!isFormValid) return;
+
+    dispatch(startRegisterWithUserPassword(formState))
   };
 
   return (
