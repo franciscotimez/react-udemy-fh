@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { JournalRoutes } from "../journal/routes/JournalRoutes";
@@ -20,6 +20,7 @@ export const AppRouter = () => {
           ? <Route path="/*" element={<JournalRoutes />} />
           : <Route path="/auth/*" element={<AuthRoutes />} />
       }
+      <Route path="/*" element={<Navigate to="/auth/login"/>} />
       {/* Login y Registro */}
       {/* <Route path="/auth/*" element={<AuthRoutes />} /> */}
       {/* JournalApp */}
