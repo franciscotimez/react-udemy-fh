@@ -1,7 +1,7 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
 import { loadNotes } from '../../helpers';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from './journalSlice';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSavingNote, updateNote } from './journalSlice';
 
 export const startNewNote = () => {
     return async (dispatch, getState) => {
@@ -40,5 +40,23 @@ export const startLoadingNotes = () => {
         const notes = await loadNotes(uid);
 
         dispatch(setNotes(notes));
+    };
+};
+
+export const startSaveNote = () => {
+    return async (dispatch, getState) => {
+        dispatch(setSavingNote())
+        // user uid
+        const { uid } = getState().auth;
+        const { activeNote } = getState().journal;
+
+        const noteToUpdate = { ...activeNote };
+        delete noteToUpdate.id;
+
+        const refDoc = doc(FirebaseDB, `${uid}/journal/notes/${activeNote.id}`);
+        await setDoc(refDoc, noteToUpdate, { merge: true });
+
+        dispatch(updateNote(activeNote))
+
     };
 };
