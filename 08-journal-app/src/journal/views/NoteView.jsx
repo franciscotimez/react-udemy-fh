@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks";
 import { setActiveNote, startSaveNote } from "../../store/journal";
 import { ImageGallery } from "../components";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 
 export const NoteView = () => {
 
   const dispatch = useDispatch();
-  const { activeNote } = useSelector(state => state.journal);
+  const { activeNote, messageSaved, isSaving } = useSelector(state => state.journal);
 
   const { title, body, date, onInputChange, formState } = useForm(activeNote);
 
@@ -21,9 +23,15 @@ export const NoteView = () => {
     dispatch(setActiveNote(formState));
   }, [formState]);
 
+  useEffect(() => {
+    if (messageSaved.length > 0) {
+      Swal.fire('Nota actualizada', messageSaved, 'success');
+    }
+  }, [messageSaved]);
+
   const onSaveNote = () => {
-    dispatch(startSaveNote())
-  }
+    dispatch(startSaveNote());
+  };
 
   return (
     <Grid
@@ -39,6 +47,7 @@ export const NoteView = () => {
       </Grid>
       <Grid item>
         <Button
+          disabled={isSaving}
           onClick={onSaveNote}
           color="primary"
           sx={{ p: 2 }}
