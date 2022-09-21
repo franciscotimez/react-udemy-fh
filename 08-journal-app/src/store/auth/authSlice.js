@@ -11,23 +11,23 @@ export const authSlice = createSlice({
         errorMessage: null,
     },
     reducers: {
-        login: (state, {payload}) => {
-            state.status = 'auth-ok' // auth-none auth-ok
-            state.uid = payload.uid
-            state.email = payload.email
-            state.displayName = payload.displayName
-            state.photoURL = payload.photoURL
-            state.errorMessage = null
+        login: (state, { payload }) => {
+            state.status = 'auth-ok'; // auth-none auth-ok
+            state.uid = payload.uid;
+            state.email = payload.email;
+            state.displayName = payload.displayName;
+            state.photoURL = payload.photoURL;
+            state.errorMessage = null;
         },
-        logout: (state, {payload}) => {
-            state.status = 'auth-none' // auth-none auth-ok
-            state.uid = null
-            state.email = null
-            state.displayName = null
-            state.photoURL = null
-            state.errorMessage = payload?.errorMessage
+        logout: (state, { payload }) => {
+            state.status = 'auth-none'; // auth-none auth-ok
+            state.uid = null;
+            state.email = null;
+            state.displayName = null;
+            state.photoURL = null;
+            state.errorMessage = payload?.errorMessage;
         },
-        checkingCredentials: (state, action) => {
+        checkingCredentials: (state) => {
             state.status = 'auth-checking';
         }
     }
