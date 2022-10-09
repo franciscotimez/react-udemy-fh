@@ -1,24 +1,25 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, TextField, Typography, Button, Link, Alert } from "@mui/material";
 import { Google } from "@mui/icons-material";
 
 import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks";
 import { startGoogleSingIn, startLoginWithUserPassword } from "../../store/auth/thunks";
-import { useMemo } from "react";
 
 const formData = {
   email: '',
   password: ''
-}
+};
+
 export const LoginPage = () => {
 
   const { status, errorMessage } = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
-  const { email, password, onInputChange, formState } = useForm(formData);
+  const { email, password, onInputChange } = useForm(formData);
 
   const isAuthenticating = useMemo(() => status === 'auth-checking', [status]);
 
@@ -38,6 +39,7 @@ export const LoginPage = () => {
     <AuthLayout title="Login">
 
       <form
+        aria-label="login-form"
         onSubmit={onSubmit}
         className='animate__animated animate__fadeIn animate__faster'
       >
@@ -60,6 +62,7 @@ export const LoginPage = () => {
               placeholder="pass"
               fullWidth
               name="password"
+              inputProps={{ "data-testid": "password" }}
               value={password}
               onChange={onInputChange}
             />
@@ -94,6 +97,7 @@ export const LoginPage = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
+                aria-label="google-btn"
                 disabled={isAuthenticating}
                 variant="contained"
                 fullWidth
