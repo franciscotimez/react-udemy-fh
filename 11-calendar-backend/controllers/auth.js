@@ -81,11 +81,13 @@ const loginUser = async (req, res = response) => {
   }
 };
 
-const renewToken = (req, res = response) => {
-  console.log("Holis");
+const renewToken = async (req, res = response) => {
+  // Generar JWT
+  const token = await generateJWT(req.id, req.name);
+
   res.json({
     ok: true,
-    msg: 'renewToken'
+    token
   });
 };
 
