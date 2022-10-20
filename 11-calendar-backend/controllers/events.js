@@ -76,10 +76,42 @@ const updateEvent = async (req, res = response) => {
 };
 
 const deleteEvent = async (req, res = response) => {
-  res.json({
-    ok: true,
-    msg: 'deleteEvent',
-  });
+  
+  const eventId = req.params.id;
+  const uid = req.uid;
+
+  try {
+
+    const event = await Event.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({
+        ok: false,
+        msg: 'El evento No existe.',
+      });
+    }
+
+    if (event.user.toString() !== uid) {
+      return res.status(401).json({
+        ok: false,
+        msg: 'No tiene permiso de hacer esta accion.',
+      });
+    }
+
+    const eventDeleted = await Event.findByIdAndDelete(eventId);
+
+    res.status(200).json({
+      ok: true,
+      event: eventDeleted
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Por favor hable con el administrator',
+    });
+  }
 };
 
 module.exports = {
