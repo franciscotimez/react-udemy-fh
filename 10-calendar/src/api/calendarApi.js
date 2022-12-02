@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getEnvVariables } from '../calendar/helpers';
+import { getEnvVariables } from '../helpers';
 
 const { VITE_API_URL } = getEnvVariables();
 
