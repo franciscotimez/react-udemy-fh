@@ -37,7 +37,11 @@ export const calendarSlice = createSlice({
     onUpdateEvent: (state, { payload }) => {
       state.events = state.events.map(event => {
         if (event.id === payload.id) {
-          return payload;
+          return {
+            ...payload,
+            start: parseISO(payload.start),
+            end: parseISO(payload.end)
+          };
         }
         return event;
       });
