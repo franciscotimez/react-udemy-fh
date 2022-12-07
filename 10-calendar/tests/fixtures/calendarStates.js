@@ -30,13 +30,13 @@ export const initialState = {
 };
 
 export const calendarWithEventsState = {
-  isLoadingEvents: true,
+  isLoadingEvents: false,
   events: [...events],
   activeEvent: null
 };
 
 export const calendarWithActiveEventState = {
-  isLoadingEvents: true,
+  isLoadingEvents: false,
   events: [...events],
   activeEvent: { ...events[0] }
 };
