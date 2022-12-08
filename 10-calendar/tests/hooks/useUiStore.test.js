@@ -15,7 +15,7 @@ const getMockStore = (initialState) => {
   });
 };
 
-describe('Pruebas en uiStores', () => {
+describe('Pruebas en useUiStore', () => {
   test('Debe de regresar los valores por defecto', () => {
 
     const mockStore = getMockStore({
