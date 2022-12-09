@@ -9,6 +9,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 import es from 'date-fns/locale/es';
 import { useCalendarStore, useUiStore } from '../../hooks';
+import { getEnvVariables } from '../../helpers';
 
 registerLocale('es', es);
 
@@ -23,8 +24,8 @@ const customStyles = {
   },
 };
 
-Modal.setAppElement('#root');
-
+if (getEnvVariables().VITE_MODE !== 'test')
+  Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
