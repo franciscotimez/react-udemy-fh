@@ -21,9 +21,7 @@ const getMockStore = (initialState) => {
 
 describe('Pruebas en useAuthStore', () => {
 
-  beforeEach(() => {
-    localStorage.clear();
-  });
+  beforeEach(() => localStorage.clear());
 
   test('Debe de regresar los valores por defecto', () => {
     const mockStore = getMockStore(initialState);
@@ -32,7 +30,6 @@ describe('Pruebas en useAuthStore', () => {
       wrapper: ({ children }) => <Provider store={mockStore}>{children}</Provider>
     });
 
-    console.log({ result });
     expect(result.current).toEqual({
       "status": "checking",
       "user": {},
@@ -127,6 +124,89 @@ describe('Pruebas en useAuthStore', () => {
     expect(localStorage.getItem('token')).toEqual(expect.any(String));
     expect(localStorage.getItem('token-date')).toEqual(expect.any(String));
 
-    spy.mockRestore()
+    spy.mockRestore();
+  });
+
+  test('Debe de realizar el Registro incorrectamente', async () => {
+    const mockStore = getMockStore(notAuthenticatedState);
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => <Provider store={mockStore}>{children}</Provider>
+    });
+
+    await act(async () => {
+      await result.current.startRegister(testUserCredentials);
+    });
+
+    const { status, user, errorMessage } = result.current;
+    expect({ status, user, errorMessage }).toEqual({
+      status: "not-authenticated",
+      user: {},
+      errorMessage: expect.any(String),
+    });
+
+    expect(localStorage.getItem('token')).toBe(null);
+    expect(localStorage.getItem('token-date')).toBe(null);
+
+    await waitFor(
+      () => expect(result.current.errorMessage).toBe(null)
+    );
+  });
+
+  test('Debe de desautenticar si no hay token', async () => {
+    const mockStore = getMockStore(initialState);
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => <Provider store={mockStore}>{children}</Provider>
+    });
+
+    await act(async () => {
+      await result.current.checkAuthToken();
+    });
+
+    const { status, user, errorMessage } = result.current;
+    console.log({ status, user, errorMessage });
+
+    expect({ status, user, errorMessage }).toEqual({
+      status: "not-authenticated",
+      user: {},
+      errorMessage: null,
+    });
+
+    expect(localStorage.getItem('token')).toBe(null);
+    expect(localStorage.getItem('token-date')).toBe(null);
+  });
+
+  test('Debe de autenticar si hay token', async () => {
+
+    const { data } = await calendarApi.post('/auth', testUserCredentials);
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('token-date', new Date().getTime());
+
+    const mockStore = getMockStore(initialState);
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => <Provider store={mockStore}>{children}</Provider>
+    });
+
+    await act(async () => {
+      await result.current.checkAuthToken();
+    });
+
+    const { status, user, errorMessage } = result.current;
+    console.log({ status, user, errorMessage });
+
+    expect({ status, user, errorMessage }).toEqual({
+      status: "authenticated",
+      user: {
+        name: data.name,
+        uid: data.uid,
+      },
+      errorMessage: null,
+    });
+
+    expect(localStorage.getItem('token')).toEqual(expect.any(String));
+    expect(localStorage.getItem('token-date')).toEqual(expect.any(String));
   });
 });
